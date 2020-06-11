@@ -1,18 +1,21 @@
 import * as React from 'react';
 import styled from "styled-components";
 import { Question, } from './Question';
-import { QUESTIONS_MAP, ResponsesContextProvider } from "./data/Context";
+import { QUESTIONS_MAP, ResponsesContextProvider } from "./lib/ResponsesContext";
+import { DbContextProvider } from "./lib/DbContext";
 
 export const App = () => {
   return (
     <ResponsesContextProvider>
-      <StyledApp>
-        {QUESTIONS_MAP.map((question) => (
-          <Question
-            key={question.id}
-            question={question}/>
-        ))}
-      </StyledApp>
+      <DbContextProvider>
+        <StyledApp>
+          {QUESTIONS_MAP.map((question) => (
+            <Question
+              key={question.id}
+              question={question}/>
+          ))}
+        </StyledApp>
+      </DbContextProvider>
     </ResponsesContextProvider>
   );
 }

@@ -1,19 +1,52 @@
-import React  from "react";
+import React from "react";
 import styled from "styled-components";
 import { Alert } from "react-bootstrap";
 import { Answer } from "./Answer";
 import {
-  TAlertVariant,
-  TQuestion,
-  useResponse,
+  defaultResponseId,
   useResponsesContext,
-} from "./data/Context";
+} from "./lib/ResponsesContext";
+import { TAlertVariant, TAnswerId, TQuestion } from "./data/Types";
+import { useDbContext } from "./lib/DbContext";
+
+export function useResponse({id}: TQuestion) {
+  const {responsesRef, setRefResponse} = useResponsesContext();
+  const {getPersistResponse, setPersistResponse} = useDbContext();
+
+  const [response, setStateResponse] = React.useState<TAnswerId>(responsesRef.current[id]);
+
+  const setResponse = React.useCallback((newResponse: TAnswerId) => {
+    setRefResponse(id, newResponse);
+    setPersistResponse(id, newResponse);
+    setStateResponse(newResponse);
+  }, [setRefResponse, setPersistResponse, setStateResponse]);
+
+  // Only the first time
+  React.useEffect(() => {
+    getPersistResponse(id)
+      .then(responsesDbData => setResponse(responsesDbData))
+      .catch()
+  }, []);
+
+  const toggleResponse = React.useCallback((newResponse: TAnswerId) => {
+    const newVal = response !== newResponse
+      ? newResponse
+      : defaultResponseId;
+    setResponse(newVal)
+  }, [response, setResponse]);
+
+  return {
+    response,
+    setResponse,
+    toggleResponse,
+  };
+}
 
 function useModeToQuestionVariant(question: TQuestion): TAlertVariant {
   const {responsesRef} = useResponsesContext()
   const {current} = responsesRef;
 
-  const answerNotSet = current[question.id] == null || current[question.id] === -1
+  const answerNotSet = current[question.id] == null || current[question.id] === defaultResponseId
   if (answerNotSet) {
     return 'primary';
   }

@@ -2,12 +2,12 @@ import React from "react";
 import styled from "styled-components";
 import * as _ from "lodash";
 import { Form } from "react-bootstrap";
-import { TAnswer } from "./data/Context";
+import { TAnswer, TAnswerId } from "./data/Types";
 
 type TAnswerProps = {
   answer: TAnswer;
   checked: boolean;
-  onClick: (id: number) => void;
+  onClick: (id: TAnswerId) => void;
 };
 
 export const Answer = ({
