@@ -30,5 +30,6 @@ export const Answer = ({
 }
 
 const StyledAnswer = styled.div`
-  padding: 0 24px;
+  padding: 0 12px;
+  font-size: .9em;
 `;

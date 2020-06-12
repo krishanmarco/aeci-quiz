@@ -12,6 +12,7 @@ const DB_KEY_RESPONSE = 'response';
 type TDbContext<Id, Data> = {
   put: (data: Data, id: Id) => Promise<void>;
   get: (id: Id) => Promise<Data>;
+  clear: () => Promise<void>;
 };
 
 type TResponsesDbData = {
@@ -30,7 +31,8 @@ function buildResponse(questionId: TQuestionId, answerId: TAnswerId = defaultRes
 
 export const dbContextDefault: TResponsesDbContext = {
   put: () => Promise.resolve(),
-  get: (id: TQuestionId) => Promise.resolve(buildResponse(id))
+  get: (id: TQuestionId) => Promise.resolve(buildResponse(id)),
+  clear: () => Promise.resolve(),
 };
 
 const DbContext = React.createContext(dbContextDefault);
@@ -67,14 +69,20 @@ export function useDbContext() {
 
   const setPersistResponse = React.useCallback((questionId: TQuestionId, response: TAnswerId) => {
     return db.put(buildResponse(questionId, response), questionId)
+      .then((...params) => console.log("DbContext:useDbContext", ...params))
   }, [db]);
 
   const getPersistResponse = React.useCallback(async (questionId: TQuestionId) => {
     return (await db.get(questionId) ?? buildResponse(questionId))[DB_KEY_RESPONSE]
   }, [db]);
 
+  const clearPersistResponses = React.useCallback(async () => {
+    return await db.clear()
+  }, [db])
+
   return {
     setPersistResponse,
     getPersistResponse,
+    clearPersistResponses,
   }
 }

@@ -15,18 +15,22 @@ export function useResponse({id}: TQuestion) {
 
   const [response, setStateResponse] = React.useState<TAnswerId>(responsesRef.current[id]);
 
-  const setResponse = React.useCallback((newResponse: TAnswerId) => {
+  const _setResponse = React.useCallback((newResponse: TAnswerId) => {
     setRefResponse(id, newResponse);
-    setPersistResponse(id, newResponse);
     setStateResponse(newResponse);
-  }, [setRefResponse, setPersistResponse, setStateResponse]);
+  }, [setRefResponse, setStateResponse]);
 
   // Only the first time
   React.useEffect(() => {
     getPersistResponse(id)
-      .then(responsesDbData => setResponse(responsesDbData))
+      .then(responsesDbData => _setResponse(responsesDbData))
       .catch()
   }, []);
+
+  const setResponse = React.useCallback((newResponse: TAnswerId) => {
+    _setResponse(newResponse);
+    setPersistResponse(id, newResponse);
+  }, [setPersistResponse, _setResponse]);
 
   const toggleResponse = React.useCallback((newResponse: TAnswerId) => {
     const newVal = response !== newResponse
@@ -82,8 +86,7 @@ export const Question = React.memo(({
 });
 
 const StyledQuestion = styled.div`
-  margin: 24px 0;
-  padding: 0 24px;
+  padding: 12px 0;
 `;
 
 const StyledAlert = styled(Alert)`
