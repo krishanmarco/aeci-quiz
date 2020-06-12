@@ -1,23 +1,37 @@
 import * as React from 'react';
 import styled from "styled-components";
 import { Question, } from './Question';
-import { QUESTIONS_MAP, ResponsesContextProvider } from "./data/Context";
+import { QUESTIONS_MAP, ResponsesContextProvider } from "./lib/ResponsesContext";
+import { DbContextProvider } from "./lib/DbContext";
+import { MenuFooter } from "./MenuFooter";
+import { MENU_HEADER_HEIGHT, MenuHeader } from "./MenuHeader";
 
 export const App = () => {
   return (
     <ResponsesContextProvider>
-      <StyledApp>
-        {QUESTIONS_MAP.map((question) => (
-          <Question
-            key={question.id}
-            question={question}/>
-        ))}
-      </StyledApp>
+      <DbContextProvider>
+        <StyledApp>
+          <MenuHeader/>
+          <QuestionsContainer>
+            {QUESTIONS_MAP.map((question) => (
+              <Question
+                key={question.id}
+                question={question}/>
+            ))}
+          </QuestionsContainer>
+          <hr/>
+          <MenuFooter/>
+        </StyledApp>
+      </DbContextProvider>
     </ResponsesContextProvider>
   );
 }
 
 const StyledApp = styled.div`
-  margin: 24px 0;
-  padding: 0 24px;
+  font-size: 14px;
+  scroll-behavior: smooth;
+`;
+
+const QuestionsContainer = styled.div`
+  margin-top: ${MENU_HEADER_HEIGHT}px;
 `;
