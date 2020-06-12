@@ -8,6 +8,7 @@ import {
 } from "./lib/ResponsesContext";
 import { TAlertVariant, TAnswerId, TQuestion } from "./data/Types";
 import { useDbContext } from "./lib/DbContext";
+import { MENU_HEADER_HEIGHT } from "./MenuHeader";
 
 export function useResponse({id}: TQuestion) {
   const {responsesRef, setRefResponse} = useResponsesContext();
@@ -70,7 +71,7 @@ export const Question = React.memo(({
   const {response, toggleResponse} = useResponse(question)
   const questionVariant = useModeToQuestionVariant(question)
   return (
-    <StyledQuestion>
+    <StyledQuestion id={`q-${question.id}`}>
       <StyledAlert variant={questionVariant}>
         {question.text}
       </StyledAlert>
@@ -86,7 +87,8 @@ export const Question = React.memo(({
 });
 
 const StyledQuestion = styled.div`
-  padding: 12px 0;
+  padding: 0 0 24px 0;
+  scroll-margin-top: ${MENU_HEADER_HEIGHT}px;
 `;
 
 const StyledAlert = styled(Alert)`
