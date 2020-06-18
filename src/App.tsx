@@ -7,13 +7,15 @@ import { MenuFooter } from "./MenuFooter";
 import { MENU_HEADER_HEIGHT, MenuHeader } from "./MenuHeader";
 
 export const App = () => {
+  const questions = QUESTIONS_MAP;
   return (
     <ResponsesContextProvider>
       <DbContextProvider>
         <StyledApp>
-          <MenuHeader/>
+          <MenuHeader
+            questions={questions}/>
           <QuestionsContainer>
-            {QUESTIONS_MAP.map((question) => (
+            {questions.map((question) => (
               <Question
                 key={question.id}
                 question={question}/>

@@ -1,10 +1,12 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { useDbContext } from "./lib/DbContext";
-import { Loader } from "./Loader";
+import { Button } from "./Button";
+import { MenuHeaderInfo } from "./MenuHeaderInfo";
+import { TQuestion } from "./data/Types";
 
-type TMenuHeaderProps = {
-  //
+export type TMenuHeaderProps = {
+  questions: TQuestion[]
 };
 
 function useResetButton(): [() => void, boolean] {
@@ -61,28 +63,17 @@ export const MenuHeader = (props: TMenuHeaderProps) => {
       <HeaderContainer>
         <h6>Quiz VDS/VL - Aero Club d'Italia</h6>
       </HeaderContainer>
-      <StyledMenuButton
-        disabled={resetLoading}
-        onClick={onResetClick}>
-        {resetLoading ? (
-          <Loader
-            size={5}
-            loading={resetLoading}/>
-        ) : (
-          'Azzera'.toUpperCase()
-        )}
-      </StyledMenuButton>
-      <StyledMenuButton
-        disabled={continueLoading}
-        onClick={onContinueClick}>
-        {resetLoading ? (
-          <Loader
-            size={5}
-            loading={continueLoading}/>
-        ) : (
-          'Riprendi'.toUpperCase()
-        )}
-      </StyledMenuButton>
+      <FlexContainer>
+        <Button
+          text='Azzera'
+          loading={resetLoading}
+          onClick={onResetClick}/>
+        <Button
+          text='Riprendi'
+          loading={continueLoading}
+          onClick={onContinueClick}/>
+        <MenuHeaderInfo {...props}/>
+      </FlexContainer>
     </StyledMenu>
   );
 }
@@ -102,9 +93,7 @@ const HeaderContainer = styled.div`
   text-align: center;
 `
 
-const StyledMenuButton = styled.button`
-  font-size: .9em;
-  height: 24px;
-  width: 96px;
-  margin: 0 6px;
+const FlexContainer = styled.div`
+  display: flex;
+  flex-direction: row;
 `
