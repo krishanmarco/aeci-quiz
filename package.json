@@ -14,7 +14,7 @@
     "@types/react-dom": "^16.9.0",
     "bootstrap": "^4.5.0",
     "dexie": "^3.0.1",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
     "react-detect-offline": "^2.4.0",
@@ -46,7 +46,7 @@
     ]
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.155",
+    "@types/lodash": "^4.17.20",
     "@types/react-bootstrap": "^1.0.1",
     "@types/styled-components": "^5.1.0",
     "netlify-cli": "^2.53.0"
